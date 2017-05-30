@@ -33,10 +33,10 @@ function doTurn(el) {
 function saveGame(el) {
     var url = '/games'
     if (currentGame.id != null) {
-        url = url + currentGame.id;
+        url = url + '/' + currentGame.id;
     }
     $.ajax({
-        type: "POST",
+        type: "PATCH",
         url: url,
         data: currentGame,
         success: function(response) {

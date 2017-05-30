@@ -12,4 +12,8 @@ class Game {
     checkWinner() {
 
     }
+
+    turn() {
+
+    }
 }
