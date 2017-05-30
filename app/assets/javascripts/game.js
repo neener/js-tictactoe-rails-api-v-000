@@ -1,7 +1,8 @@
 class Game {
 
-    constructor(state) {
-        this.state = state
+    constructor(id, state) {
+        this.id = id;
+        this.state = state;
     }
 
     doTurn() {
