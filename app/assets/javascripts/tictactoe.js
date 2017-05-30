@@ -27,12 +27,19 @@ function loadGames(el) {
 }
 
 function showGames(games) {
-    html = '<ul>';
+    var $list = $('<ul></ul>');
     games.forEach((game) => {
-        html += '<li>' + game.id + '</li>';
+        $li = $('<li>');
+        $li.text(game.id);
+        $li.on('click', function() { loadGame(this) });
+        $list.append($li)
     })
-    html += '</ul>';
-    $('div#games')[0].innerHTML = html;
+    $('div#games ul').remove();
+    $('div#games').append($list);
+}
+
+function loadGame(el) {
+    console.log(el);
 }
 
 function displayError() {
