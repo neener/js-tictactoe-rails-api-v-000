@@ -5,15 +5,4 @@ class Game {
         this.state = state;
     }
 
-    doTurn() {
-
-    }
-
-    checkWinner() {
-
-    }
-
-    turn() {
-
-    }
 }
