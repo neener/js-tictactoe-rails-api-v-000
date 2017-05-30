@@ -21,5 +21,11 @@ function saveGame(el) {
 }
 
 function showGames(el) {
+    $.getJSON('games', function(response) {
+        console.log(response)
+    }).fail(function(error) { displayError(error) });
+}
 
+function displayError() {
+    $('#errors').text("I'm sorry, there's been an error. Please try again.");
 }
