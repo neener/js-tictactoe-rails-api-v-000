@@ -1,7 +1,21 @@
 $(function() {
+    attachListeners();
+})
+
+const EMPTY = ["", "", "", "", "", "", "", "", ""];
+var currentGame = new Game(null, EMPTY);
+var games = {}
+var turn = currentGame.turn();
+
+function player() {
+    return currentGame.player();
+}
+
+function attachListeners() {
     $('tbody td').on('click', function() {
-        handleClick(this);
+        doTurn(this);
     })
+    console.log('attached')
     $('#save').on('click', function(e) {
         saveGame();
         e.preventDefault();
@@ -10,23 +24,37 @@ $(function() {
         loadGames();
         e.preventDefault();
     })
-})
+}
 
-function handleClick(el) {
-    doTurn();
+function doTurn(el) {
+    console.log('turn called')
 }
 
 function saveGame(el) {
+    var url = '/games'
+    if (currentGame.id != null) {
+        url = url + currentGame.id;
+    }
+    $.ajax({
+        type: "POST",
+        url: url,
+        data: currentGame,
+        success: function(response) {
+            currentGame = new Game(response.id, response.state);
+        },
+        dataType: 'json'
+    })
 
 }
 
 function loadGames(el) {
     $.getJSON('games', function(response) {
-        showGames(response.games)
+        games = response.games;
+        showGames();
     }).fail(function(error) { displayError(error) });
 }
 
-function showGames(games) {
+function showGames() {
     var $list = $('<ul></ul>');
     games.forEach((game) => {
         $li = $('<li>');
@@ -39,7 +67,10 @@ function showGames(games) {
 }
 
 function loadGame(el) {
-    console.log(el);
+    var gameId = el.innerText;
+    $.getJSON(`games/${gameId}`, function(response) {
+        currentGame = new Game(response.id, response.state);
+    }).fail(function(error) { displayError(error) });
 }
 
 function displayError() {
