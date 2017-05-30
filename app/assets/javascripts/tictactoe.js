@@ -68,9 +68,9 @@ function showGames() {
 
 function loadGame(el) {
     var gameId = el.innerText;
-    $.getJSON(`games/${gameId}`, function(response) {
-        currentGame = new Game(response.id, response.state);
-    }).fail(function(error) { displayError(error) });
+    currentGame = $.grep(games, function(i) {
+        return i.id == gameId;
+    })[0]
 }
 
 function displayError() {
