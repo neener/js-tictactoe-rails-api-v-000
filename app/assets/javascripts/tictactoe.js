@@ -15,3 +15,11 @@ $(function() {
 function handleClick(el) {
     doTurn();
 }
+
+function saveGame(el) {
+
+}
+
+function showGames(el) {
+
+}
