@@ -7,7 +7,7 @@ $(function() {
         e.preventDefault();
     })
     $('#previous').on('click', function(e) {
-        showGames();
+        loadGames();
         e.preventDefault();
     })
 })
@@ -20,10 +20,19 @@ function saveGame(el) {
 
 }
 
-function showGames(el) {
+function loadGames(el) {
     $.getJSON('games', function(response) {
-        console.log(response)
+        showGames(response.games)
     }).fail(function(error) { displayError(error) });
+}
+
+function showGames(games) {
+    html = '<ul>';
+    games.forEach((game) => {
+        html += '<li>' + game.id + '</li>';
+    })
+    html += '</ul>';
+    $('div#games')[0].innerHTML = html;
 }
 
 function displayError() {
