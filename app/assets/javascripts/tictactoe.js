@@ -5,11 +5,6 @@ $(function() {
 const EMPTY = ["", "", "", "", "", "", "", "", ""];
 var currentGame = new Game(null, EMPTY);
 var games = {}
-var turn = currentGame.turn();
-
-function player() {
-    return currentGame.player();
-}
 
 function attachListeners() {
     $('tbody td').on('click', function() {

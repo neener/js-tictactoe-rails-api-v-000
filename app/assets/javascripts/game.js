@@ -4,16 +4,5 @@ class Game {
         this.id = id;
         this.state = state;
     }
-
-    doTurn() {
-
-    }
-
-    checkWinner() {
-
-    }
-
-    turn() {
-
-    }
+    
 }
