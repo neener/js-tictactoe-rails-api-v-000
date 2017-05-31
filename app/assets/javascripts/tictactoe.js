@@ -28,6 +28,7 @@ function attachListeners() {
 
 function doTurn(el) {
     console.log('turn called')
+
 }
 
 function saveGame(el) {
@@ -77,6 +78,3 @@ function displayError() {
     $('#errors').text("I'm sorry, there's been an error. Please try again.");
 }
 
-function checkWinner(){
-    
-}
