@@ -2,9 +2,23 @@ $(function() {
     attachListeners();
 })
 
-const EMPTY = ["", "", "", "", "", "", "", "", ""];
-var currentGame = new Game(null, EMPTY);
-var games = {}
+// const EMPTY = ["", "", "", "", "", "", "", "", ""];
+const WIN_COMBINATIONS = [
+
+    [0,1,2],
+    [3,4,5],
+    [6,7,8],
+    [0,3,6],
+    [1,4,7],
+    [2,5,8],
+    [0,4,8],
+    [2,4,6]
+
+  ]
+
+// var currentGame = new Game(null, EMPTY);
+var currentGame = 0
+// var games = {}
 var turn = 0
 
 function attachListeners() {
@@ -24,16 +38,27 @@ function attachListeners() {
 
 function doTurn(el) {
     console.log('turn called')
+    //turn += 1
+    //checkWinner()
+    //updateState(el)
+}
+
+function player(){
+    return (turn % 2 === 0) ? "O" : "X";
+}
+
+function checkWinner(){
 
 }
 
+// function updateState
 function saveGame(el) {
     var url = '/games'
     if (currentGame.id != null) {
         url = url + '/' + currentGame.id;
     }
     $.ajax({
-        type: "PATCH",
+        type: currentGame.id == null ? "POST":"PATCH",
         url: url,
         data: currentGame,
         success: function(response) {

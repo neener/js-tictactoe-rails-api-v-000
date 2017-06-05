@@ -8,7 +8,7 @@ class GamesController < ActionController::Base
   
   def update
     game = Game.find(params[:id])
-    game.update(params.permit(:id, state: []))
+    game.update(params.require(:game).permit(state: []))
     render json: game
   end
 
