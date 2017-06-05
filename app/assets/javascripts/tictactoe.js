@@ -1,5 +1,5 @@
 $(function() {
-    loadGame();
+    updateState();
     attachListeners();
 })
 
@@ -47,7 +47,7 @@ function doTurn(el) {
     console.log(col, row)
     currentGame.state[row][col] = player();
     console.log(currentGame.state)
-    loadGame()
+    updateState()
     checkWinner()
     // if its open make move for the player and increment the turn
     // check for a winner
@@ -55,7 +55,7 @@ function doTurn(el) {
 }
 
 function player(){
-    return (turn % 2 === 0) ? "O" : "X";
+    return (turn % 2 === 0) ? "X" : "O";
 }
 
 function checkWinner(){
@@ -65,7 +65,7 @@ function checkWinner(){
            ( board[1][1] !== "" && (( board[1][1] === board[0][0] && board[1][1] == board[2][2] ) || ( board[1][1] === board[0][2] && board[1][1] === board[2][0] )));
         //if win show winMessage
         if (win) message("Player " + player() + " won!")
-        // save game
+        // save game (next step)
 }
 
 function message(text){
@@ -109,8 +109,8 @@ function showGames() {
     $('div#games').append($list);
 }
 
-function loadGame() {
-    // function called to take a game and put it onto the board
+function updateState() {
+    // function call to take a game and put it onto the board
     console.log(currentGame.state);
     console.log($("#game td"))
     $("#game td").each((index, element) => {
