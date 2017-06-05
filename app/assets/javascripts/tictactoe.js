@@ -3,7 +3,7 @@ $(function() {
     attachListeners();
 })
 
-const EMPTY = ["", "", "", "", "", "", "", "", ""];
+const EMPTY = [["", "", ""], ["", "", ""], ["", "", ""]];
 // const WIN_COMBINATIONS = [
 
 //     [0,1,2],
@@ -24,7 +24,7 @@ var turn = 0
 
 function attachListeners() {
     $('tbody td').on('click', function() {
-        doTurn(this);
+        doTurn($(this));
     })
     console.log('attached')
     $('#save').on('click', function(e) {
@@ -39,9 +39,19 @@ function attachListeners() {
 
 function doTurn(el) {
     console.log('turn called')
-    //turn += 1
-    //checkWinner()
-    //updateState(el)
+    // check if the cell open
+    if (el[0].innerHTML != "") return;
+    turn++; 
+    var col = el.data()['x']
+    var row = el.data()['y']
+    console.log(col, row)
+    currentGame.state[row][col] = player();
+    console.log(currentGame.state)
+    loadGame()
+    checkWinner()
+    // if its open make move for the player and increment the turn
+    // check for a winner
+    // loadGame
 }
 
 function player(){
@@ -49,10 +59,20 @@ function player(){
 }
 
 function checkWinner(){
-
+    var board = currentGame.state
+    var win = board.some((row) => { return row[0] !== "" && row[0] === row[1] && row[1] === row[2]}) ||
+           [0, 1, 2].some((column) => { return board[0][column] !== "" && board[0][column] === board[1][column] && board[1][column] === board[2][column]}) ||
+           ( board[1][1] !== "" && (( board[1][1] === board[0][0] && board[1][1] == board[2][2] ) || ( board[1][1] === board[0][2] && board[1][1] === board[2][0] )));
+        //if win show winMessage
+        if (win) message("Player " + player() + " won!")
+        // save game
 }
 
-// function updateState
+function message(text){
+    $('#message').html(text) 
+}
+
+
 function saveGame(el) {
     var url = '/games'
     if (currentGame.id != null) {
