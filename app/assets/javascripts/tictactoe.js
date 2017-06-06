@@ -36,7 +36,7 @@ var doTurn = function(event) {
     updateState(event.target)
 
     if (checkWinner() || tieGame()) {
-        saveGame();
+        saveGame(true);
         resetBoard();
     } else {
         turn++;
@@ -79,7 +79,7 @@ var message = function(text) {
     $('#message').html(text)
 }
 
-var saveGame = function() {
+var saveGame = function(reset) {
     var url = '/games'
     if (currentGame) {
         url = url + '/' + currentGame;
@@ -89,7 +89,7 @@ var saveGame = function() {
         url: url,
         data: { id: currentGame, state: getState() },
         success: function(response) {
-            currentGame = response.game.id;
+            currentGame = reset ? undefined : response.game.id;
         },
         dataType: 'json'
     })
