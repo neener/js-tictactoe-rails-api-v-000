@@ -33,16 +33,32 @@ var attachListeners = function() {
 }
 
 var doTurn = function(event) {
-    console.log('turn called')
     updateState(event.target)
-    checkWinner()
-    turn++;
+
+    if (checkWinner() || tieGame()) {
+        resetBoard();
+        saveGame();
+    } else {
+        turn++;
+    }
+}
+
+var resetBoard = function() {
+    turn = 0;
+    setState(['', '', '', '', '', '', '', '', '']);
 }
 
 var player = function() {
     return (turn % 2 === 0) ? "X" : "O";
 }
 
+var tieGame = function() {
+    if (turn == 8) {
+        message("Tie game");
+        return true;
+    }
+    return false;
+}
 var checkWinner = function() {
     var board = getState();
     //var win = board.some((row) => { return row[0] !== "" && row[0] === row[1] && row[1] === row[2] }) || [0, 1, 2].some((column) => { return board[0][column] !== "" && board[0][column] === board[1][column] && board[1][column] === board[2][column] }) ||
@@ -55,8 +71,8 @@ var checkWinner = function() {
     })
 
     //if win show winMessage
-    if (win) message("Player " + player() + " won!")
-        // save game (next step)
+    if (win) message("Player " + player() + " Won!")
+    return win
 }
 
 var message = function(text) {
@@ -65,15 +81,16 @@ var message = function(text) {
 
 var saveGame = function() {
     var url = '/games'
-    if (currentGame != null) {
-        url = url + '/' + currentGame.id;
+    if (currentGame != 0) {
+        url = url + '/' + currentGame;
     }
     $.ajax({
-        type: currentGame.id == null ? "POST" : "PATCH",
+        type: currentGame == 0 ? "POST" : "PATCH",
         url: url,
         data: currentGame,
         success: function(response) {
-            currentGame = new Game(response.id, response.state);
+            currentGame = response.id;
+            setState(response.state)
         },
         dataType: 'json'
     })
@@ -107,7 +124,6 @@ var setState = function(state) {
     $('table td').each(function(index) {
         $(this).html(state[index])
     })
-    $('table').data()['state'] = state.join(',')
 }
 
 var getState = function() {
