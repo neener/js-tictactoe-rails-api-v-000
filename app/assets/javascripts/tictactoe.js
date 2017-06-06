@@ -1,5 +1,4 @@
 $(function() {
-    setState(["", "", "", "", "", "", "", "", ""])
     attachListeners();
 })
 
@@ -15,38 +14,36 @@ const WIN_COMBINATIONS = [
 ]
 
 var currentGame = 0;
-var games = {}
-var turn = 0
+var games = {};
+var turn = 0;
 
-function attachListeners() {
-    $('tbody td').on('click', function() {
-        doTurn(this);
+var attachListeners = function() {
+    $('td').click(function(event) {
+        doTurn(event);
     })
     console.log('attached')
-    $('#save').on('click', function(e) {
+    $('#save').click(function(e) {
         saveGame();
         e.preventDefault();
     })
-    $('#previous').on('click', function(e) {
+    $('#previous').click(function(e) {
         loadGames();
         e.preventDefault();
     })
 }
 
-function doTurn(element) {
+var doTurn = function(event) {
     console.log('turn called')
-        // check if the cell open
-    if (element.innerHTML != "") return;
     turn++;
-    updateState(element)
+    updateState(event.target)
     checkWinner()
 }
 
-function player() {
+var player = function() {
     return (turn % 2 === 0) ? "X" : "O";
 }
 
-function checkWinner() {
+var checkWinner = function() {
     var board = getState();
     //var win = board.some((row) => { return row[0] !== "" && row[0] === row[1] && row[1] === row[2] }) || [0, 1, 2].some((column) => { return board[0][column] !== "" && board[0][column] === board[1][column] && board[1][column] === board[2][column] }) ||
     //    (board[1][1] !== "" && ((board[1][1] === board[0][0] && board[1][1] == board[2][2]) || (board[1][1] === board[0][2] && board[1][1] === board[2][0])));
@@ -62,11 +59,11 @@ function checkWinner() {
         // save game (next step)
 }
 
-function message(text) {
+var message = function(text) {
     $('#message').html(text)
 }
 
-function saveGame() {
+var saveGame = function() {
     var url = '/games'
     if (currentGame != null) {
         url = url + '/' + currentGame.id;
@@ -83,14 +80,14 @@ function saveGame() {
 
 }
 
-function loadGames() {
+var loadGames = function() {
     $.getJSON('games', function(response) {
         games = response.games;
         showGames();
     }).fail(function(error) { displayError(error) });
 }
 
-function showGames() {
+var showGames = function() {
     var $list = $('<ul></ul>');
     games.forEach((game) => {
         $li = $('<li>');
@@ -102,32 +99,31 @@ function showGames() {
     $('div#games').append($list);
 }
 
-function updateState(element) {
-    // function call to take a game and put it onto the board
+var updateState = function(element) {
     $(element).html(player())
 }
 
-function setState(state) {
-    $('#game td').each(function(index) {
+var setState = function(state) {
+    $('table td').each(function(index) {
         $(this).html(state[index])
     })
-    $('#game').data()['state'] = state.join(',')
+    $('table').data()['state'] = state.join(',')
 }
 
-function getState() {
-    return $('#game td').map(function() {
+var getState = function() {
+    return $('table td').map(function() {
         return this.innerHTML
     }).get();
 }
 
-function getId() {
-    return $('#game').data()['game-id'];
+var getId = function() {
+    return $('table').data()['game-id'];
 }
 
-function setId(id) {
+var setId = function(id) {
     $('#game').data()['game-id'] = id;
 }
 
-function displayError() {
+var displayError = function() {
     $('#errors').text("I'm sorry, there's been an error. Please try again.");
 }
