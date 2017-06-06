@@ -3,7 +3,11 @@ $(function() {
     attachListeners();
 })
 
-const EMPTY = [["", "", ""], ["", "", ""], ["", "", ""]];
+const EMPTY = [
+    ["", "", ""],
+    ["", "", ""],
+    ["", "", ""]
+];
 // const WIN_COMBINATIONS = [
 
 //     [0,1,2],
@@ -39,9 +43,9 @@ function attachListeners() {
 
 function doTurn(el) {
     console.log('turn called')
-    // check if the cell open
+        // check if the cell open
     if (el[0].innerHTML != "") return;
-    turn++; 
+    turn++;
     var col = el.data()['x']
     var row = el.data()['y']
     console.log(col, row)
@@ -49,27 +53,26 @@ function doTurn(el) {
     console.log(currentGame.state)
     updateState()
     checkWinner()
-    // if its open make move for the player and increment the turn
-    // check for a winner
-    // loadGame
+        // if its open make move for the player and increment the turn
+        // check for a winner
+        // loadGame
 }
 
-function player(){
+function player() {
     return (turn % 2 === 0) ? "X" : "O";
 }
 
-function checkWinner(){
+function checkWinner() {
     var board = currentGame.state
-    var win = board.some((row) => { return row[0] !== "" && row[0] === row[1] && row[1] === row[2]}) ||
-           [0, 1, 2].some((column) => { return board[0][column] !== "" && board[0][column] === board[1][column] && board[1][column] === board[2][column]}) ||
-           ( board[1][1] !== "" && (( board[1][1] === board[0][0] && board[1][1] == board[2][2] ) || ( board[1][1] === board[0][2] && board[1][1] === board[2][0] )));
-        //if win show winMessage
-        if (win) message("Player " + player() + " won!")
+    var win = board.some((row) => { return row[0] !== "" && row[0] === row[1] && row[1] === row[2] }) || [0, 1, 2].some((column) => { return board[0][column] !== "" && board[0][column] === board[1][column] && board[1][column] === board[2][column] }) ||
+        (board[1][1] !== "" && ((board[1][1] === board[0][0] && board[1][1] == board[2][2]) || (board[1][1] === board[0][2] && board[1][1] === board[2][0])));
+    //if win show winMessage
+    if (win) message("Player " + player() + " won!")
         // save game (next step)
 }
 
-function message(text){
-    $('#message').html(text) 
+function message(text) {
+    $('#message').html(text)
 }
 
 
@@ -79,7 +82,7 @@ function saveGame(el) {
         url = url + '/' + currentGame.id;
     }
     $.ajax({
-        type: currentGame.id == null ? "POST":"PATCH",
+        type: currentGame.id == null ? "POST" : "PATCH",
         url: url,
         data: currentGame,
         success: function(response) {
@@ -116,13 +119,19 @@ function updateState() {
     $("#game td").each((index, element) => {
         //Turn index of 1d array into two indices for 2d array ie: 8 = [2][2], 5 = [1][2]
         var row = index < 3 ? 0 : index < 6 ? 1 : 2;
-        var col = index % 3; 
+        var col = index % 3;
         element.innerHTML = currentGame.state[row][col] || "";
     })
+}
+
+function setState(state) {
+    $('#game').data()['state'] = state.join(',')
+}
+
+function getState() {
+    return $('#game').data()['state'].split(',')
 }
 
 function displayError() {
     $('#errors').text("I'm sorry, there's been an error. Please try again.");
 }
-
-
