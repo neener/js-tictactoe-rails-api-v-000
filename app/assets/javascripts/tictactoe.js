@@ -27,7 +27,7 @@ var turn = 0
 
 function attachListeners() {
     $('tbody td').on('click', function() {
-        doTurn(event);
+        doTurn(this);
     })
     console.log('attached')
     $('#save').on('click', function(e) {
@@ -40,12 +40,12 @@ function attachListeners() {
     })
 }
 
-function doTurn(event) {
+function doTurn(element) {
     console.log('turn called')
         // check if the cell open
-    if (event.target.innerHTML != "") return;
+    if (element.innerHTML != "") return;
     turn++;
-    updateState(event)
+    updateState(element)
     checkWinner()
         // if its open make move for the player and increment the turn
         // check for a winner
@@ -105,10 +105,9 @@ function showGames() {
     $('div#games').append($list);
 }
 
-function updateState(event) {
+function updateState(element) {
     // function call to take a game and put it onto the board
-    debugger;
-    event.target.html(player())
+    $(element).html(player())
 }
 
 function setState(state) {
