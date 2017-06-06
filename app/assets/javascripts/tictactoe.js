@@ -40,7 +40,8 @@ function attachListeners() {
 function doTurn(el) {
     console.log('turn called')
     // check if the cell open
-    if (el[0].innerHTML != "") return;
+    if (el.innerHTML != "") return;
+    el = $(el)
     turn++; 
     var col = el.data()['x']
     var row = el.data()['y']
@@ -50,8 +51,9 @@ function doTurn(el) {
     updateState()
     checkWinner()
     // if its open make move for the player and increment the turn
+    // updateState
     // check for a winner
-    // loadGame
+    
 }
 
 function player(){
@@ -66,6 +68,7 @@ function checkWinner(){
         //if win show winMessage
         if (win) message("Player " + player() + " won!")
         // save game (next step)
+        saveGame()
 }
 
 function message(text){
