@@ -34,9 +34,9 @@ var attachListeners = function() {
 
 var doTurn = function(event) {
     console.log('turn called')
-    turn++;
     updateState(event.target)
     checkWinner()
+    turn++;
 }
 
 var player = function() {
