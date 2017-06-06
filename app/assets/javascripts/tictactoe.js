@@ -1,12 +1,8 @@
 $(function() {
+    setState(["", "", "", "", "", "", "", "", ""])
     attachListeners();
 })
 
-const EMPTY = [
-    ["", "", ""],
-    ["", "", ""],
-    ["", "", ""]
-];
 // const WIN_COMBINATIONS = [
 
 //     [0,1,2],
@@ -21,7 +17,6 @@ const EMPTY = [
 //   ]
 
 var currentGame = 0;
-
 var games = {}
 var turn = 0
 
@@ -57,7 +52,7 @@ function player() {
 }
 
 function checkWinner() {
-    var board = currentGame.state
+    var board = getState();
     var win = board.some((row) => { return row[0] !== "" && row[0] === row[1] && row[1] === row[2] }) || [0, 1, 2].some((column) => { return board[0][column] !== "" && board[0][column] === board[1][column] && board[1][column] === board[2][column] }) ||
         (board[1][1] !== "" && ((board[1][1] === board[0][0] && board[1][1] == board[2][2]) || (board[1][1] === board[0][2] && board[1][1] === board[2][0])));
     //if win show winMessage
@@ -111,6 +106,9 @@ function updateState(element) {
 }
 
 function setState(state) {
+    $('#game td').each(function(index) {
+        $(this).html(state[index])
+    })
     $('#game').data()['state'] = state.join(',')
 }
 
