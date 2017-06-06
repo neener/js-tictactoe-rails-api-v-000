@@ -1,5 +1,4 @@
 $(function() {
-    updateState();
     attachListeners();
 })
 
@@ -21,14 +20,14 @@ const EMPTY = [
 
 //   ]
 
-var currentGame = new Game(null, EMPTY);
+var currentGame = 0;
 
 var games = {}
 var turn = 0
 
 function attachListeners() {
     $('tbody td').on('click', function() {
-        doTurn($(this));
+        doTurn(event);
     })
     console.log('attached')
     $('#save').on('click', function(e) {
@@ -41,17 +40,12 @@ function attachListeners() {
     })
 }
 
-function doTurn(el) {
+function doTurn(event) {
     console.log('turn called')
         // check if the cell open
-    if (el[0].innerHTML != "") return;
+    if (event.target.innerHTML != "") return;
     turn++;
-    var col = el.data()['x']
-    var row = el.data()['y']
-    console.log(col, row)
-    currentGame.state[row][col] = player();
-    console.log(currentGame.state)
-    updateState()
+    updateState(event)
     checkWinner()
         // if its open make move for the player and increment the turn
         // check for a winner
@@ -75,8 +69,7 @@ function message(text) {
     $('#message').html(text)
 }
 
-
-function saveGame(el) {
+function saveGame() {
     var url = '/games'
     if (currentGame != null) {
         url = url + '/' + currentGame.id;
@@ -93,7 +86,7 @@ function saveGame(el) {
 
 }
 
-function loadGames(el) {
+function loadGames() {
     $.getJSON('games', function(response) {
         games = response.games;
         showGames();
@@ -112,16 +105,10 @@ function showGames() {
     $('div#games').append($list);
 }
 
-function updateState() {
+function updateState(event) {
     // function call to take a game and put it onto the board
-    console.log(currentGame.state);
-    console.log($("#game td"))
-    $("#game td").each((index, element) => {
-        //Turn index of 1d array into two indices for 2d array ie: 8 = [2][2], 5 = [1][2]
-        var row = index < 3 ? 0 : index < 6 ? 1 : 2;
-        var col = index % 3;
-        element.innerHTML = currentGame.state[row][col] || "";
-    })
+    debugger;
+    event.target.html(player())
 }
 
 function setState(state) {
