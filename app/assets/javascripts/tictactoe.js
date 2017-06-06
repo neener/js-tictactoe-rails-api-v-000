@@ -78,7 +78,7 @@ function message(text) {
 
 function saveGame(el) {
     var url = '/games'
-    if (currentGame.id != null) {
+    if (currentGame != null) {
         url = url + '/' + currentGame.id;
     }
     $.ajax({
@@ -130,6 +130,14 @@ function setState(state) {
 
 function getState() {
     return $('#game').data()['state'].split(',')
+}
+
+function getId() {
+    return $('#game').data()['game-id'];
+}
+
+function setId(id) {
+    $('#game').data()['game-id'] = id;
 }
 
 function displayError() {
