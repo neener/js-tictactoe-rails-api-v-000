@@ -128,8 +128,10 @@ var updateState = function(element) {
 }
 
 var setState = function(state) {
+    turn = 0;
     $('table td').each(function(index) {
         $(this).html(state[index])
+        if (state[index] != '') turn++;
     })
 }
 
