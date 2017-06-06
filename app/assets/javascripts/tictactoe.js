@@ -130,14 +130,6 @@ var getState = function() {
     }).get();
 }
 
-var getId = function() {
-    return $('table').data()['game-id'];
-}
-
-var setId = function(id) {
-    $('#game').data()['game-id'] = id;
-}
-
 var displayError = function() {
     $('#errors').text("I'm sorry, there's been an error. Please try again.");
 }
