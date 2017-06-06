@@ -13,7 +13,7 @@ const WIN_COMBINATIONS = [
     [2, 4, 6]
 ]
 
-var currentGame = 0;
+var currentGame;
 var games = {};
 var turn = 0;
 
@@ -36,8 +36,8 @@ var doTurn = function(event) {
     updateState(event.target)
 
     if (checkWinner() || tieGame()) {
-        resetBoard();
         saveGame();
+        resetBoard();
     } else {
         turn++;
     }
@@ -81,16 +81,15 @@ var message = function(text) {
 
 var saveGame = function() {
     var url = '/games'
-    if (currentGame != 0) {
+    if (currentGame) {
         url = url + '/' + currentGame;
     }
     $.ajax({
-        type: currentGame == 0 ? "POST" : "PATCH",
+        type: currentGame ? "PATCH" : "POST",
         url: url,
-        data: currentGame,
+        data: { id: currentGame, state: getState() },
         success: function(response) {
-            currentGame = response.id;
-            setState(response.state)
+            currentGame = response.game.id;
         },
         dataType: 'json'
     })
@@ -98,22 +97,21 @@ var saveGame = function() {
 }
 
 var loadGames = function() {
-    $.getJSON('games', function(response) {
+    $.getJSON('/games', function(response) {
         games = response.games;
         showGames();
     }).fail(function(error) { displayError(error) });
 }
 
 var showGames = function() {
-    var $list = $('<ul></ul>');
+    $list = $('div#games');
+    $list.empty();
     games.forEach((game) => {
         $li = $('<li>');
         $li.text(game.id);
-        $li.on('click', function() { loadGame(this) });
+        $li.click(function() { loadGame(this) });
         $list.append($li)
     })
-    $('div#games ul').remove();
-    $('div#games').append($list);
 }
 
 var updateState = function(element) {
