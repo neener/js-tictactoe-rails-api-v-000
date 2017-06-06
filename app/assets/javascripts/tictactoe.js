@@ -90,8 +90,7 @@ var saveGame = function(reset) {
         url: url,
         data: { game: { state: getState() } },
         success: function(response) {
-            debugger
-            currentGame = reset ? undefined : response.id;
+            currentGame = reset ? undefined : response.game.id;
         },
         dataType: 'json'
     })

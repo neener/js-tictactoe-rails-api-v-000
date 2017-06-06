@@ -2,14 +2,14 @@ class GamesController < ActionController::Base
   protect_from_forgery with: :exception
 
   def create
-    game = Game.create(params.permit(:id, state: []))
-    render json: game
+    game = Game.create(params.require(:game).permit(state: []))
+    render json: {game: game.as_json(only: [:id,:state])}
   end
   
   def update
     game = Game.find(params[:id])
     game.update(params.require(:game).permit(state: []))
-    render json: game
+    render json: {game: game.as_json(only: [:id,:state])}
   end
 
   def index
