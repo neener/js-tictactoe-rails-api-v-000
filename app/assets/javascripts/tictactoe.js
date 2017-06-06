@@ -113,7 +113,9 @@ function setState(state) {
 }
 
 function getState() {
-    return $('#game').data()['state'].split(',')
+    return $('#game td').map(function() {
+        return this.innerHTML
+    }).get();
 }
 
 function getId() {
