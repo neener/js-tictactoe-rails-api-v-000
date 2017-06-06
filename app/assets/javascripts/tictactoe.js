@@ -96,6 +96,14 @@ var saveGame = function(reset) {
 
 }
 
+function loadGame(el) {
+    currentGame = el.innerText;
+    game = $.grep(games, function(i) {
+        return i.id == currentGame;
+    })[0]
+    if (game) setState(game.state)
+}
+
 var loadGames = function() {
     $.getJSON('/games', function(response) {
         games = response.games;
