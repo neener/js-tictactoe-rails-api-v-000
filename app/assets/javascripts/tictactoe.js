@@ -3,18 +3,16 @@ $(function() {
     attachListeners();
 })
 
-// const WIN_COMBINATIONS = [
-
-//     [0,1,2],
-//     [3,4,5],
-//     [6,7,8],
-//     [0,3,6],
-//     [1,4,7],
-//     [2,5,8],
-//     [0,4,8],
-//     [2,4,6]
-
-//   ]
+const WIN_COMBINATIONS = [
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
+    [1, 4, 7],
+    [2, 5, 8],
+    [0, 4, 8],
+    [2, 4, 6]
+]
 
 var currentGame = 0;
 var games = {}
@@ -42,9 +40,6 @@ function doTurn(element) {
     turn++;
     updateState(element)
     checkWinner()
-        // if its open make move for the player and increment the turn
-        // check for a winner
-        // loadGame
 }
 
 function player() {
@@ -53,8 +48,15 @@ function player() {
 
 function checkWinner() {
     var board = getState();
-    var win = board.some((row) => { return row[0] !== "" && row[0] === row[1] && row[1] === row[2] }) || [0, 1, 2].some((column) => { return board[0][column] !== "" && board[0][column] === board[1][column] && board[1][column] === board[2][column] }) ||
-        (board[1][1] !== "" && ((board[1][1] === board[0][0] && board[1][1] == board[2][2]) || (board[1][1] === board[0][2] && board[1][1] === board[2][0])));
+    //var win = board.some((row) => { return row[0] !== "" && row[0] === row[1] && row[1] === row[2] }) || [0, 1, 2].some((column) => { return board[0][column] !== "" && board[0][column] === board[1][column] && board[1][column] === board[2][column] }) ||
+    //    (board[1][1] !== "" && ((board[1][1] === board[0][0] && board[1][1] == board[2][2]) || (board[1][1] === board[0][2] && board[1][1] === board[2][0])));
+    let win = false;
+    WIN_COMBINATIONS.forEach(function(item) {
+        if (board[item[0]] == board[item[1]] && board[item[0]] == board[item[2]] && board[item[0]] != "") {
+            win = true;
+        }
+    })
+
     //if win show winMessage
     if (win) message("Player " + player() + " won!")
         // save game (next step)
