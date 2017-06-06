@@ -81,13 +81,14 @@ var message = function(text) {
 
 var saveGame = function(reset) {
     var url = '/games'
+    var state = getState();
     if (currentGame) {
         url = url + '/' + currentGame;
     }
     $.ajax({
         type: currentGame ? "PATCH" : "POST",
         url: url,
-        data: { id: currentGame, state: getState() },
+        data: new Game(currentGame, state),
         success: function(response) {
             currentGame = reset ? undefined : response.game.id;
         },
