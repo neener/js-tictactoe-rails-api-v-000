@@ -4,5 +4,5 @@ class Game {
         this.id = id;
         this.state = state;
     }
-    
+
 }
